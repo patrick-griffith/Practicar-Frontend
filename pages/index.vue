@@ -3,10 +3,14 @@
         <div id="question-box" class="has-text-centered">
             
             <div id="score">
-               <span>{{ score.right }}</span> / <span>{{ score.total }}</span>
+               <span class="correct">{{ score.right }}</span> <span class="slash">/</span> <span class="total">{{ score.total }}</span>
             </div>
 
-            <h1 class="title" v-if="conjugation">{{ conjugation.english }}</h1>
+            <h1 class="title" v-if="conjugation">
+                {{ conjugation.english }}
+                <span v-if="conjugation.tense.id == 2">(one time)</span>
+                <span v-else-if="conjugation.tense.id == 3">(every day)</span>
+            </h1>                
 
             <div id="answer">                
                 <input ref="answer" type="text" v-model="answer"/>
@@ -14,37 +18,35 @@
 
             <div id="wrong" v-if="conjugation && wrong">
                 <p>{{ conjugation.spanish }}</p>
-                <div id="details">
-                    <p>Verb: {{ conjugation.verb.spanish }}</p>
-                    <p>Mood: {{ conjugation.tense.mood.name }}</p>
-                    <p>Tense: {{ conjugation.tense.name }}</p>
-                </div>
+                <table>
+                    <tr><td>Verb:</td><td>{{ conjugation.verb.spanish }}</td></tr>
+                    <tr><td>Mood:</td><td>{{ conjugation.tense.mood.name }}</td></tr>
+                    <tr><td>Tense:</td><td>{{ conjugation.tense.name }}</td></tr>
+                </table>
             </div>                  
         </div>
 
         <div id="settings">
-            <div class="block">
-                <h2 class="subtitle">Persons</h2>
-                <div>
-                    <div class="field" v-for="person in persons" :key="person.id">
-                        <b-checkbox v-model="personGroup"
-                            :native-value="person.id">
-                            {{ person.spanish }}
-                        </b-checkbox>
-                    </div> 
-                </div>
-            </div>  
-        
-            <div class="block">
-                <h2 class="subtitle">Tenses</h2>
-                <div>
-                    <div v-for="mood in moods" :key="mood.id">
-                        <h3 class="subtitle">{{ mood.name }}</h3>
-                        <div class="field" v-for="tense in mood.tenses" :key="tense.id">
-                            <b-checkbox v-model="tenseGroup"
-                                :native-value="tense.id">
-                                {{ tense.name }}
-                            </b-checkbox>
+            <div class="container">
+                <div class="columns">
+                    <div class="column">
+                        <h2 class="subtitle">Persons</h2>
+                        <div>
+                            <div class="field" v-for="person in persons" :key="person.id">
+                                <b-checkbox v-model="personGroup" :native-value="person.id">{{ person.spanish }}</b-checkbox>
+                            </div> 
+                        </div>
+                    </div>  
+                
+                    <div class="column">
+                        <h2 class="subtitle">Tenses</h2>
+                        <div>
+                            <div v-for="mood in moods" :key="mood.id">
+                                <h3 class="subtitle">{{ mood.name }}</h3>
+                                <div class="field" v-for="tense in mood.tenses" :key="tense.id">
+                                    <b-checkbox v-model="tenseGroup" :native-value="tense.id">{{ tense.name }}</b-checkbox>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -76,7 +78,15 @@
                 tenseGroup: [1],
                 personGroup: [1,2,3,4,6]
             };
-        },  
+        }, 
+        watch:{
+            personGroup (val) {
+                this.updateSettings()
+            },
+            tenseGroup (val) {
+                this.updateSettings()
+            },
+        },
         computed: {
             ...mapGetters([]),
             conjugation: function () {
@@ -89,6 +99,11 @@
             title: pagetitle + ' - ' + process.env.appName,            
         },
         methods: {
+            updateSettings(){
+                this.wrong = false
+                this.answer = ''
+                this.getQuestions()
+            },
             async getQuestions(){
                 $verbs.getQuestions(this.tenseGroup.toString(),this.personGroup.toString()).then((result) => {    
                     this.conjugations = result.success.data.conjugations
@@ -133,7 +148,6 @@
             accentLastChar(){
                 var char = this.answer.charAt(this.answer.length-1); 
                 var new_char = char
-                console.log(char)
 
                 if(char == 'a'){
                     new_char = 'á'

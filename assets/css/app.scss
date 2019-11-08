@@ -21,8 +21,12 @@ body{
 
 
 #question-box{
-  max-width: 500px;
   margin: 8em auto;
+  h1{
+    span{
+      font-size: .5em;
+    }
+  }
   #answer{
     span{
 
@@ -35,6 +39,7 @@ body{
       width: 100%;
       max-width: 200px;
       font-size: 24px;
+      text-align: center;
     }
   }
 }
@@ -54,6 +59,34 @@ body{
     }
     h3{
 
+    }
+  }
+}
+
+#score{
+  position: absolute;
+  top: 30px;
+  right: 30px;
+}
+
+#wrong{
+  background: $warning;
+  border: 2px solid $danger;
+  margin-top: 2em;
+  display: inline-block;
+  padding: 1em 3em;
+  > p{
+    font-weight: 600;
+    font-size: 2em;
+  }
+  table{
+    tr{
+      td{
+        &:first-child{
+          text-align: right;
+          padding-right: .5em;
+        }
+      }
     }
   }
 }
