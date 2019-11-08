@@ -1,0 +1,22 @@
+# dependencies
+node_modules
+
+# logs
+npm-debug.log
+
+# Nuxt build
+.nuxt
+
+# Nuxt generate
+dist
+
+# IDE
+.idea
+
+# environment
+.env
+
+#package-lock.json
+package-lock.json
+ecosystem.config.js
+.git-deploy/*
