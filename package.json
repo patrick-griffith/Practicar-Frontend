@@ -24,7 +24,7 @@
     "dotenv": "^6.1.0",
     "fs": "0.0.1-security",
     "jwt-decode": "^2.2.0",
-    "nuxt": "^2.8.1",
+    "nuxt": "^2.10.0",
     "nuxt-auth": "^2.0.10",
     "nuxt-buefy": "^0.3.16",
     "nuxt-validate": "^0.1.3",

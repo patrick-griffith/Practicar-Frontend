@@ -8,9 +8,24 @@ export async function getVerb(spanish) {
     )
 }
 
-export async function getQuestions() {
+export async function getQuestions(tenses) {
+
     return await $invoke._invoker(
         'get',
-        process.env.baseApiUrl + '/questions?tenses_id-in=1,2,3&persons_id-in=1,2,3,4,6'
+        process.env.baseApiUrl + '/questions?_with=verb,tense.mood,person&tenses_id-in=' + tenses + '&persons_id-in=1,2,3,4,6'
+    )
+}
+
+export async function getMoods() {
+    return await $invoke._invoker(
+        'get',
+        process.env.baseApiUrl + '/moods?_with=tenses'
+    )
+}
+
+export async function getPersons() {
+    return await $invoke._invoker(
+        'get',
+        process.env.baseApiUrl + '/persons'
     )
 }
