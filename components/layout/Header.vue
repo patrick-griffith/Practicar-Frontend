@@ -21,18 +21,12 @@
                                     <img class="is-rounded is-padded" :src="('https://via.placeholder.com/200/dedfe0/000?text=' + memberProfile.username.charAt(0))">
                                 </figure>
                             </div>
-                            <b-dropdown-item v-if="$store.getters.isSiteAdmin">
-                                <nuxt-link to="/admin">Admin</nuxt-link>
-                            </b-dropdown-item>
-                            <b-dropdown-item v-if="false">
-                                <nuxt-link to="/account/profile">My Account</nuxt-link>
-                            </b-dropdown-item>
-                            <b-dropdown-item>
-                                <nuxt-link to="/account/answers">My Answers</nuxt-link>
-                            </b-dropdown-item>
-                            <b-dropdown-item>
-                                <nuxt-link to="/account/logout">Logout</nuxt-link>
-                            </b-dropdown-item>                
+                           
+                            <nuxt-link v-if="$store.getters.isSiteAdmin" to="/admin" class="dropdown-item">Admin</nuxt-link>
+                            <nuxt-link v-if="false" to="/account/profile" class="dropdown-item">My Account</nuxt-link>
+                            <nuxt-link to="/account/answers" class="dropdown-item">My Answers</nuxt-link>
+                            <nuxt-link to="/account/logout" class="dropdown-item">Logout</nuxt-link>
+                                            
                         </b-dropdown> 
                     </div>
                 </template>

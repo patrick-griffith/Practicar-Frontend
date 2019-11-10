@@ -8,6 +8,21 @@ export async function getVerb(spanish) {
     )
 }
 
+export async function getAnswers() {
+    return await $invoke._invoker(
+        'get',
+        process.env.baseApiUrl + '/answers/me?_with=conjugation&_sort=-created_at&_limit=50'
+    )
+}
+
+export async function recordAnswer(formData) {
+    return await $invoke._invoker(
+        'post',
+        process.env.baseApiUrl + '/answers',
+        formData
+    )
+}
+
 export async function getQuestions(tenses, persons, regulars, singleVerb) {
     return await $invoke._invoker(
         'get',

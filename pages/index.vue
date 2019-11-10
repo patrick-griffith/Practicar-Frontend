@@ -140,6 +140,8 @@
         data: function () {
             return {
                 pageTitle: pagetitle, 
+                seconds_elapsed: 0,
+                shouldRecordAnswer: true,
                 singleVerb: null,
                 showHelp: false,
                 isNotesModalActive: false,               
@@ -183,6 +185,7 @@
             updateSettings(){
                 this.wrong = false
                 this.answer = ''
+                this.shouldRecordAnswer = true
                 this.getQuestions()
             },
             async getSingleVerb(spanish){
@@ -218,10 +221,25 @@
                     console.log("error", error);
                 }) 
             },
+            async recordAnswer(answer, conjugations_id, seconds_elapsed){
+                if(this.shouldRecordAnswer && this.isLoggedIn){
+                    $verbs.recordAnswer({
+                        conjugations_id: conjugations_id,
+                        seconds_elapsed: seconds_elapsed,
+                        answer: answer
+                    }).then((result) => {    
+                        
+                    }).catch((error) => {
+                        console.log("error", error);
+                    }) 
+                }
+            },
             checkAnswer(){
                 if(this.answer !== ''){
+                    this.recordAnswer(this.answer, this.conjugation.id, this.seconds_elapsed)
                     if(this.answer == this.conjugation.spanish){                     
                         this.nextQuestion()
+                        this.shouldRecordAnswer = true
                         this.wrong = false
                         this.answer = ''
                         this.score.right += 1
@@ -229,6 +247,7 @@
                         let that = this                     
                     }else{
                         this.wrong = true
+                        this.shouldRecordAnswer = false
                         this.score.total += 1
                     }
                 }
