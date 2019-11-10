@@ -10,7 +10,7 @@
                 <div v-if="singleVerb" id="spanish-verb">
                     studying only <strong>{{ singleVerb.spanish }}</strong>. <nuxt-link :to="'/'">study all verbs.</nuxt-link>
                 </div>
-                <div v-else :style="{visibility: showSpanishVerb ? 'visible' : 'hidden'}" id="spanish-verb">
+                <div v-else id="spanish-verb">
                     <b-tooltip label="click to study JUST this verb" type="is-dark">
                         <nuxt-link :to="'/verb/' + conjugation.verb.spanish">{{ conjugation.verb.spanish }}</nuxt-link>
                     </b-tooltip>
@@ -51,7 +51,7 @@
                         <li class="list-item" v-if="!isLoggedIn"><nuxt-link :to="'/login/signup'">create an account</nuxt-link> to save your settings and a complete record of all your answers, so your practice can be automatically tailored based on the verbs/tenses you struggle with.</li>
                     </ul>
                 </b-message>
-                <p v-if="showHelp == false"><code>SPACE</code> for accents. <code>TAB</code> for info.</p>
+                <p v-if="showHelp == false"><code @click="accentLastChar()">SPACE</code> for accents. <code @click="showHelp = true">TAB</code> for info.</p>
             </div>
 
         </div>
@@ -142,7 +142,6 @@
                 pageTitle: pagetitle, 
                 singleVerb: null,
                 showHelp: false,
-                showSpanishVerb: false,
                 isNotesModalActive: false,               
                 conjugations: null,
                 moods: null,
@@ -222,14 +221,12 @@
             checkAnswer(){
                 if(this.answer !== ''){
                     if(this.answer == this.conjugation.spanish){                     
-                        this.showSpanishVerb = false
                         this.nextQuestion()
                         this.wrong = false
                         this.answer = ''
                         this.score.right += 1
                         this.score.total += 1
-                        let that = this
-                        setTimeout(function(){ that.showSpanishVerb = true }, 2000);                        
+                        let that = this                     
                     }else{
                         this.wrong = true
                         this.score.total += 1
@@ -288,7 +285,6 @@
             this.getMoods()
             this.getPersons()
             this.$refs.answer.focus()
-            this.showSpanishVerb = true
         },
         created(){
             let that = this

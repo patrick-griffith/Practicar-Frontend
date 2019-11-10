@@ -6,7 +6,7 @@
                 <div class="columns is-centered is-variable">
                     <div class="column is-half-tablet is-4-desktop">
                         <h1 class="title">finish signup</h1>
-                        <p>please finish creating your account by setting a custom password to replace the temporary one that was created for you. <span v-if="!memberProfile.first_name">additionally, please fill in your name. feel free to use a fake name if you want. no me importa.</span></p>                                                                
+                        <p>please finish creating your account by setting a custom password to replace the temporary one that was created for you. <span v-if="!memberProfile.username">additionally, please choose a username.</span></p>                                                                
                     </div>
                     <div class="column is-half-tablet is-5-desktop is-offset-1-desktop">
                         <form class="box">                                    
@@ -14,16 +14,11 @@
                                 <label class="label" for="email">email</label>
                                 <p>{{ $store.state.auth.user.email }}</p>                           
                             </div>
-                            <template v-if="!memberProfile.first_name">
+                            <template v-if="!memberProfile.username">
                                 <div class="field">
-                                    <label class="label" for="first_name">first name</label>
-                                    <input v-validate="'required'" data-vv-as="first_name" type="text" name="first_name" id="first_name" ref="first_name" v-model="first_name" class="input"/>                  
-                                    <span class="help is-danger">{{ errors.first('first_name') }}</span>
-                                </div>
-                                <div class="field">
-                                    <label class="label" for="last_name">last name</label>
-                                    <input v-validate="'required'" data-vv-as="last_name" type="text" name="last_name" id="last_name" ref="last_name" v-model="last_name" class="input"/>                  
-                                    <span class="help is-danger">{{ errors.first('last_name') }}</span>
+                                    <label class="label" for="username">username</label>
+                                    <input v-validate="'required'" data-vv-as="username" type="text" name="username" id="username" ref="username" v-model="username" class="input"/>                  
+                                    <span class="help is-danger">{{ errors.first('username') }}</span>
                                 </div>
                             </template>
                             <div class="field">
@@ -61,8 +56,7 @@ export default {
     data: function () {
         return {                
             password: '',
-            first_name: '',
-            last_name: ''
+            username: ''
         };
     }, 
     computed: {
@@ -89,34 +83,34 @@ export default {
                 return false
             }
 
-            this.$root.$loading.start();
-            var memberSend = []
-            memberSend.password = password.value
-            memberSend.id = this.$store.state.auth.user.id
-            
-            await $members.setCustomPassword( memberSend ).then(() => {
-                
-            }).catch((error) => {
-                console.log(error)    
-            })
-
-            if(this.first_name && this.last_name){
+            if(this.username && this.password){
                 var reply = await $members.updateMember({
-                        id: this.memberProfile.id,
-                        first_name: this.first_name,
-                        last_name: this.last_name
-                    }).then(() => {
+                    id: this.memberProfile.id,
+                    username: this.username,
+                    password: this.password
+                }).then((result) => {
+                    if(result.success){
                         this.$store.commit('COMPLETE_USER', {
-                            first_name: this.first_name,
-                            last_name: this.last_name
+                            username: this.username,
                         })  
+                        this.$router.push('/');
+                    }else{
+                        if(result.error.response.data.username){
+                            this.$buefy.toast.open({
+                                message: result.error.response.data.username[0],
+                                type: 'is-danger'
+                            })
+                        }else if(result.error.response.data.password){
+                            this.$buefy.toast.open({
+                                message: result.error.response.data.password[0],
+                                type: 'is-danger'
+                            })
+                        }
+                    }
                 }).catch((error) => {
                     console.log(error)    
                 })
-            }            
-
-            this.$router.push('/');
-            this.$root.$loading.finish();
+            }                        
         }
     }
 }

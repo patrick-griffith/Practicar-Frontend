@@ -4,7 +4,7 @@
             <template slot="brand">
                 <b-navbar-item tag="router-link" :to="{ path: '/' }">
                     <h2 class="title is-5">
-                        <span class="tag is-warning">practicar</span>
+                        <span class="tag is-warning">practicar.mx</span>
                     </h2>
                 </b-navbar-item>
             </template>
@@ -18,7 +18,7 @@
                         <b-dropdown>
                             <div slot="trigger">
                                 <figure class="image is-48x48">
-                                    <img class="is-rounded is-padded" :src="('https://via.placeholder.com/200/dedfe0/000?text=' + memberProfile.first_name.charAt(0))">
+                                    <img class="is-rounded is-padded" :src="('https://via.placeholder.com/200/dedfe0/000?text=' + memberProfile.username.charAt(0))">
                                 </figure>
                             </div>
                             <b-dropdown-item v-if="$store.getters.isSiteAdmin">
