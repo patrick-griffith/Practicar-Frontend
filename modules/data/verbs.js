@@ -8,18 +8,17 @@ export async function getVerb(spanish) {
     )
 }
 
-export async function getQuestions(tenses) {
-
+export async function getQuestions(tenses, persons, regulars, singleVerb) {
     return await $invoke._invoker(
         'get',
-        process.env.baseApiUrl + '/questions?_with=verb,tense.mood,person&tenses_id-in=' + tenses + '&persons_id-in=1,2,3,4,6'
+        process.env.baseApiUrl + '/questions?_with=verb,tense.mood,person&tenses_id-in=' + tenses + '&persons_id-in=' + persons + '&is_irregular-in=' + regulars + (singleVerb && singleVerb.id ? ('&verbs_id=' + singleVerb.id) : '')
     )
 }
 
 export async function getMoods() {
     return await $invoke._invoker(
         'get',
-        process.env.baseApiUrl + '/moods?_with=tenses&id-in=1,3'
+        process.env.baseApiUrl + '/moods?_with=tenses&id-in=1,4,5'
     )
 }
 

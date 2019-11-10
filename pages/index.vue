@@ -1,20 +1,37 @@
 <template>
-    <div> 
+    <div :class="{'logged-in' : isLoggedIn}">         
         <div id="question-box" class="has-text-centered">
-            
+
             <div id="score">
                <span class="correct">{{ score.right }}</span> <span class="slash">/</span> <span class="total">{{ score.total }}</span>
             </div>
 
+            <template v-if="conjugation">
+                <div v-if="singleVerb" id="spanish-verb">
+                    studying only <strong>{{ singleVerb.spanish }}</strong>. <nuxt-link :to="'/'">study all verbs.</nuxt-link>
+                </div>
+                <div v-else :style="{visibility: showSpanishVerb ? 'visible' : 'hidden'}" id="spanish-verb">
+                    <b-tooltip label="click to study JUST this verb" type="is-dark">
+                        <nuxt-link :to="'/verb/' + conjugation.verb.spanish">{{ conjugation.verb.spanish }}</nuxt-link>
+                    </b-tooltip>
+                </div>
+            </template>
+            
             <h1 class="title" v-if="conjugation">
-                {{ conjugation.english }}
+                <template v-if="conjugation.tense.mood.id == 3">¡</template>
+                
+                {{ conjugation.english }}                
+                
                 <span v-if="conjugation.tense.id == 2">(one time)</span>
                 <span v-else-if="conjugation.tense.id == 3">(every day)</span>
-            </h1>                
+                
+                <template v-if="conjugation.tense.mood.id == 3">!</template>
+            </h1>
+            
 
             <div id="answer">                
-                <input ref="answer" type="text" v-model="answer"/>
-            </div>
+                <input ref="answer" type="text" spellcheck="false" v-model="answer"/>
+            </div>            
 
             <div id="wrong" v-if="conjugation && wrong">
                 <p>{{ conjugation.spanish }}</p>
@@ -23,14 +40,27 @@
                     <tr><td>Mood:</td><td>{{ conjugation.tense.mood.name }}</td></tr>
                     <tr><td>Tense:</td><td>{{ conjugation.tense.name }}</td></tr>
                 </table>
-            </div>                  
+            </div> 
+
+            <div id="notes">
+                <b-message :active.sync="showHelp" title="Noticias" type="is-warning" aria-close-label="Close message">
+                    <ul>
+                        <li class="list-item">press <code>SPACE</code> to add accent/tilda to most recent letter. again to remove.</li>
+                        <li class="list-item">change your settings below to practice different things.</li>
+                        <li class="list-item">click a verb (in blue) above to practice JUST that verb.</li>
+                        <li class="list-item" v-if="!isLoggedIn"><nuxt-link :to="'/login/signup'">create an account</nuxt-link> to save your settings and a complete record of all your answers, so your practice can be automatically tailored based on the verbs/tenses you struggle with.</li>
+                    </ul>
+                </b-message>
+                <p v-if="showHelp == false"><code>SPACE</code> for accents. <code>TAB</code> for info.</p>
+            </div>
+
         </div>
 
         <div id="settings">
-            <div class="container">
+            <div class="section ">
                 <div class="columns">
-                    <div class="column">
-                        <h2 class="subtitle">Persons</h2>
+                    <div class="column is-5">
+                        <h2 class="title is-5">personas</h2>
                         <div>
                             <div class="field" v-for="person in persons" :key="person.id">
                                 <b-checkbox v-model="personGroup" :native-value="person.id">{{ person.spanish }}</b-checkbox>
@@ -38,21 +68,64 @@
                         </div>
                     </div>  
                 
-                    <div class="column">
-                        <h2 class="subtitle">Tenses</h2>
+                    <div class="column is-5">
+                        <h2 class="title is-5">tiempos</h2>
                         <div>
                             <div v-for="mood in moods" :key="mood.id">
-                                <h3 class="subtitle">{{ mood.name }}</h3>
-                                <div class="field" v-for="tense in mood.tenses" :key="tense.id">
+                                <h3 class="subtitle is-italic">{{ mood.name }}</h3>
+                                <div class="field" v-for="tense in mood.tenses" :key="tense.id">                                    
                                     <b-checkbox v-model="tenseGroup" :native-value="tense.id">{{ tense.name }}</b-checkbox>
                                 </div>
                             </div>
+
+                            <div>
+                                <h3 class="subtitle is-italic">indicativo</h3>
+                                <div class="field">
+                                    <b-tag>coming soon</b-tag>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3 class="subtitle is-italic">subjuntivo</h3>
+                                <div class="field">
+                                    <b-tag>coming soon</b-tag>
+                                </div>
+                            </div>
+                            
                         </div>
                     </div>
+                     <div class="column is-2">
+                        <h2 class="title is-5">tipos</h2>
+                        <div>
+                             <div class="field">
+                                <b-checkbox v-model="regularGroup" :native-value="0">regulares</b-checkbox>
+                            </div> 
+                            <div class="field">
+                                <b-checkbox v-model="regularGroup" :native-value="1">irregulares</b-checkbox>
+                            </div> 
+                        </div>
+                     </div>
                 </div>
             </div>
         </div>     
 
+        <div class="has-text-centered" style="margin: 10em 0 3em 0;">
+            <b-button @click.prevent="isNotesModalActive = true" type="is-danger">qué es eso?</b-button>
+        </div>
+        <b-modal :active.sync="isNotesModalActive" :has-modal-card=true>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">qué es eso?</p>
+                </header>
+                <section class="modal-card-body article">
+                   <p>i’ve been taking <a href="https://www.walkspanish.com/" target="_blank">spanish classes</a> in la ciudad de mexico for the past couple of weeks, and have done super well on each of the assignments where we conjugate only once tense at a time. but then when i get out in the real world - where i don't have a paper telling me exactly what tense and what verb to use - i flutter.</p>
+                   <p>so i’m building this to become a little better at quickly choosing the right verb and the right tense for what i want to say, and then conjugating it. because i don't care about doing well on my homework. i want to be able to have conversations.</p>
+                   <p>i have a background in both maching learning engineering and in app development, so I have high hopes for what this app might one day be. but for now... poco a poco.</p>
+                   <p>also i understand that there are tons of shortcomings in this app right now. si quieres ayudar, <a href="patrick.lorenzut@gmail.com">email me</a>.</p>
+                </section>
+            </div>
+        </b-modal>
+        
        
     </div>
 </template>
@@ -62,10 +135,15 @@
     import { mapGetters } from 'vuex'
     window.$verbs = require('~/modules/data/verbs') 
     export default {
-        layout: 'standard',        
+        layout: 'standard',  
+        middleware: ['member'],      
         data: function () {
             return {
-                pageTitle: pagetitle,
+                pageTitle: pagetitle, 
+                singleVerb: null,
+                showHelp: false,
+                showSpanishVerb: false,
+                isNotesModalActive: false,               
                 conjugations: null,
                 moods: null,
                 persons: null,
@@ -76,7 +154,8 @@
                     total: 0
                 },
                 tenseGroup: [1],
-                personGroup: [1,2,3,4,6]
+                personGroup: [1,2,3,4,6],
+                regularGroup: [0,1]
             };
         }, 
         watch:{
@@ -86,9 +165,12 @@
             tenseGroup (val) {
                 this.updateSettings()
             },
+            regularGroup (val) {
+                this.updateSettings()
+            },
         },
         computed: {
-            ...mapGetters([]),
+            ...mapGetters(['isLoggedIn', 'memberProfile']),
             conjugation: function () {
                 if(this.conjugations){
                     return this.conjugations[0]
@@ -104,8 +186,20 @@
                 this.answer = ''
                 this.getQuestions()
             },
-            async getQuestions(){
-                $verbs.getQuestions(this.tenseGroup.toString(),this.personGroup.toString()).then((result) => {    
+            async getSingleVerb(spanish){
+                await $verbs.getVerb(spanish).then((result) => {    
+                    this.singleVerb = result.success.data.verb
+                }).catch((error) => {
+                    console.log("error", error);
+                })
+            },
+            async getQuestions(){                
+                $verbs.getQuestions(
+                    this.tenseGroup.toString(),
+                    this.personGroup.toString(), 
+                    this.regularGroup.toString(),
+                    this.singleVerb
+                ).then((result) => {    
                     this.conjugations = result.success.data.conjugations
                 }).catch((error) => {
                     console.log("error", error);
@@ -128,11 +222,14 @@
             checkAnswer(){
                 if(this.answer !== ''){
                     if(this.answer == this.conjugation.spanish){                     
+                        this.showSpanishVerb = false
                         this.nextQuestion()
                         this.wrong = false
                         this.answer = ''
                         this.score.right += 1
                         this.score.total += 1
+                        let that = this
+                        setTimeout(function(){ that.showSpanishVerb = true }, 2000);                        
                     }else{
                         this.wrong = true
                         this.score.total += 1
@@ -181,17 +278,32 @@
         components: {
             
         },
-        mounted(){  
-            this.getQuestions()
+        async mounted(){  
+
+            if(this.$route.params.verb){
+                await this.getSingleVerb(this.$route.params.verb)
+            }            
+
+            this.getQuestions()            
             this.getMoods()
             this.getPersons()
             this.$refs.answer.focus()
+            this.showSpanishVerb = true
         },
         created(){
             let that = this
-            document.addEventListener('keyup', function (evt) {
-                if (evt.keyCode === 16) { //shift
-                    that.accentLastChar()
+            document.addEventListener('keydown', function (evt) {
+                if (evt.keyCode === 32) { //SPACE
+                    evt.preventDefault()
+                    that.accentLastChar()                    
+                }
+                else if (evt.keyCode === 9) { //TAB
+                    evt.preventDefault()
+                    if(that.showHelp == true){
+                        that.showHelp = false
+                    }else{
+                        that.showHelp = true
+                    }
                 }
                 else if(evt.keyCode >= 48 && evt.keyCode <= 57){ //numbers
 

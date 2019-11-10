@@ -1,21 +1,7 @@
 export const state = () => ({
-  characters: [
-    {                      
-        name: 'Existential Elon',
-        slug: 'elon',
-        description: 'I have no "real" problems in my life, so I go out of my way to create my own existential ones.'
-    },
-    {                      
-        name: 'Perfect Perry',
-        slug: 'perry',                        
-        description: 'I’m afraid to show myself to the world because I’m afraid of being judged for work that’s not my best.'
-    },
-    {                      
-        name: 'Robotic Raul',
-        slug: 'raul',
-        description: 'I pride myself in being logical and feel ashamed when I have an emotion that I can’t explain.'
-    }                    
-  ]
+  _currentUser: null,
+  _token: null,
+  toast: null //if we have an alert to show
 })
 
 export const actions = {
@@ -23,9 +9,24 @@ export const actions = {
 }
 
 export const mutations = {
-    
+  SET_TOAST: function (state, toast){
+    state.toast = toast
+  },
+  COMPLETE_USER: function (state, user) {
+    state.auth.user.first_name = user.first_name
+    state.auth.user.last_name = user.last_name
+  },
 }
 
 export const getters = {
-  
+  isLoggedIn(state) {
+    return state.auth.loggedIn && state.auth.user
+  },
+  memberProfile(state) {
+    return state.auth.user
+  },
+  fullName(state){
+    let u = state.auth.user
+    return u.first_name + " " + u.last_name
+  },
 }
