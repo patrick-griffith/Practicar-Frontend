@@ -142,6 +142,7 @@
             return {
                 pageTitle: pagetitle, 
                 seconds_elapsed: 0,
+                hasBeenInitialized: false,
                 shouldRecordAnswer: true,
                 singleVerb: null,
                 showHelp: false,
@@ -162,13 +163,19 @@
         }, 
         watch:{
             personGroup (val) {
-                this.updateSettings()
+                if(this.hasBeenInitialized){
+                    this.updateSettings()
+                }
             },
             tenseGroup (val) {
-                this.updateSettings()
+                if(this.hasBeenInitialized){
+                    this.updateSettings()
+                }
             },
             regularGroup (val) {
-                this.updateSettings()
+                if(this.hasBeenInitialized){
+                    this.updateSettings()
+                }
             },
         },
         computed: {
@@ -325,6 +332,7 @@
             if(this.isLoggedIn){
                 await this.useUserSettings()
             }
+            this.hasBeenInitialized = true
 
             if(this.$route.params.verb){
                 await this.getSingleVerb(this.$route.params.verb)
