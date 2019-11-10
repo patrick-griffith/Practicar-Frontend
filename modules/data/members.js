@@ -63,6 +63,20 @@ export async function updateMember(formData) {
  )
 }
 
+export async function updateMemberSettings(formData) {
+
+    return  await $invoke._invoker(
+           'put',
+           process.env.baseApiUrl + '/members/settings/'+formData.id, formData,
+           { headers:
+                   {
+                       'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+                   }
+           } 
+      
+    )
+   }
+
 export async function createMember(formData) {
 
     return  await $invoke._invoker(

@@ -134,6 +134,7 @@
     var pagetitle = 'Home'
     import { mapGetters } from 'vuex'
     window.$verbs = require('~/modules/data/verbs') 
+    window.$members = require('~/modules/data/members') 
     export default {
         layout: 'standard',  
         middleware: ['member'],      
@@ -186,6 +187,20 @@
                 this.wrong = false
                 this.answer = ''
                 this.shouldRecordAnswer = true
+
+                if(this.isLoggedIn){
+                    $members.updateMemberSettings({
+                        id: this.memberProfile.id,
+                        tenses: this.tenseGroup,
+                        persons: this.personGroup,
+                        regulars: this.regularGroup
+                    }).then((result) => {    
+                        
+                    }).catch((error) => {
+                        console.log("error", error);
+                    })
+                }
+
                 this.getQuestions()
             },
             async getSingleVerb(spanish){
@@ -289,12 +304,27 @@
                 }
 
                 this.answer = this.answer.replace(/.$/,new_char)
+            },
+            async useUserSettings(){
+                if(this.memberProfile.settings.tenses){
+                    this.tenseGroup = JSON.parse("[" + this.memberProfile.settings.tenses + "]");
+                }
+                if(this.memberProfile.settings.persons){
+                    this.personGroup = JSON.parse("[" + this.memberProfile.settings.persons + "]");
+                }
+                if(this.memberProfile.settings.regulars){
+                    this.regularGroup = JSON.parse("[" + this.memberProfile.settings.regulars + "]");
+                }
             }
         },
         components: {
             
         },
         async mounted(){  
+            
+            if(this.isLoggedIn){
+                await this.useUserSettings()
+            }
 
             if(this.$route.params.verb){
                 await this.getSingleVerb(this.$route.params.verb)
