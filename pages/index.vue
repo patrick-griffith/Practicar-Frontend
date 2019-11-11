@@ -30,7 +30,9 @@
             
 
             <div id="answer">                
-                <input ref="answer" style="text-transform: lowercase;" type="text" spellcheck="false" v-model="answer"/>
+                <input ref="answer" 
+                    @keydown="answerTyped" 
+                    style="text-transform: lowercase;" type="text" spellcheck="false" v-model="answer"/>
             </div>            
 
             <div id="wrong" v-if="conjugation && wrong">
@@ -325,6 +327,26 @@
                         this.regularGroup = JSON.parse("[" + this.memberProfile.settings.regulars + "]");
                     }
                 }
+            },
+            answerTyped(evt){
+                if (evt.keyCode === 32) { //SPACE
+                    evt.preventDefault()
+                    this.accentLastChar()                    
+                }
+                else if (evt.keyCode === 9) { //TAB
+                    evt.preventDefault()
+                    if(this.showHelp == true){
+                        this.showHelp = false
+                    }else{
+                        this.showHelp = true
+                    }
+                }
+                else if(evt.keyCode >= 48 && evt.keyCode <= 57){ //numbers
+
+                }
+                else if(evt.keyCode == 13){ //enter
+                    this.checkAnswer()
+                }
             }
         },
         components: {
@@ -345,29 +367,6 @@
             this.getMoods()
             this.getPersons()
             this.$refs.answer.focus()
-        },
-        created(){
-            let that = this
-            document.addEventListener('keydown', function (evt) {
-                if (evt.keyCode === 32) { //SPACE
-                    evt.preventDefault()
-                    that.accentLastChar()                    
-                }
-                else if (evt.keyCode === 9) { //TAB
-                    evt.preventDefault()
-                    if(that.showHelp == true){
-                        that.showHelp = false
-                    }else{
-                        that.showHelp = true
-                    }
-                }
-                else if(evt.keyCode >= 48 && evt.keyCode <= 57){ //numbers
-
-                }
-                else if(evt.keyCode == 13){ //enter
-                    that.checkAnswer()
-                }
-            });
         }
     }
 </script>
