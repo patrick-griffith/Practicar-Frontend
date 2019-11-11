@@ -15,7 +15,7 @@
             <template slot="end">
                 <template  v-if="isLoggedIn">
                     <div id="member-nav">
-                        <b-dropdown>
+                        <b-dropdown class="is-right">
                             <div slot="trigger">
                                 <figure class="image is-48x48">
                                     <img class="is-rounded is-padded" :src="('https://via.placeholder.com/200/dedfe0/000?text=' + memberProfile.username.charAt(0))">

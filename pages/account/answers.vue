@@ -16,7 +16,6 @@
                         <th>Question</th>
                         <th>Correct Answer</th>
                         <th>Your Answer</th>
-                        <th>Seconds Elapsed</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -25,11 +24,10 @@
                             <td>{{ answer.conjugation.english }}</td>
                             <td>{{ answer.conjugation.spanish }}</td>
                             <td>{{ answer.answer }}</td>
-                            <td>{{ answer.seconds_elapsed }}</td>
                         </tr>
                     </template>
                     <tr v-else>
-                        <td colspan="4">                                    
+                        <td colspan="3">                                    
                             No answers recorded yet.
                         </td>
                     </tr>

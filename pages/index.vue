@@ -8,10 +8,10 @@
 
             <template v-if="conjugation">
                 <div v-if="singleVerb" id="spanish-verb">
-                    studying only <strong>{{ singleVerb.spanish }}</strong>. <nuxt-link :to="'/'">study all verbs.</nuxt-link>
+                    practicing only <strong>{{ singleVerb.spanish }}</strong>. <nuxt-link :to="'/'">practice all verbs.</nuxt-link>
                 </div>
                 <div v-else id="spanish-verb">
-                    <b-tooltip label="click to study JUST this verb" type="is-dark">
+                    <b-tooltip label="click to practice JUST this verb" type="is-dark">
                         <nuxt-link :to="'/verb/' + conjugation.verb.spanish">{{ conjugation.verb.spanish }}</nuxt-link>
                     </b-tooltip>
                 </div>
