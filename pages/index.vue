@@ -81,7 +81,7 @@
                             </div>
 
                             <div>
-                                <h3 class="subtitle is-italic">indicativo</h3>
+                                <h3 class="subtitle is-italic">imperativo</h3>
                                 <div class="field">
                                     <b-tag>coming soon</b-tag>
                                 </div>
