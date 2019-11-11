@@ -1,7 +1,7 @@
 {
   "name": "practicar",
-  "version": "1.0.0",
-  "description": "Spanish verbs.",
+  "version": "1.0.1",
+  "description": "Practice conjugating spanish verbs in various tenses at the same time.",
   "author": "Patrick Lorenzut",
   "private": true,
   "scripts": {
