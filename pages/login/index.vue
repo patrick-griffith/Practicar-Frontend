@@ -14,7 +14,7 @@
               
               <div class="field">
                 <label class="label">email address</label>
-                <input v-model="Email" v-validate="'required|email'" type="email" name="Email" id="Email" placeholder="Email" class="input">                  
+                <input v-model="Email" v-validate="'required|email'" spellcheck="false" type="email" name="Email" id="Email" placeholder="Email" class="input">                  
                 <span class="help is-danger">{{ errors.first('Email') }}</span>
               </div>
 
