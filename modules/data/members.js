@@ -81,12 +81,14 @@ export async function createMember(formData) {
 
     return  await $invoke._invoker(
             'post',
-            process.env.baseApiUrl + '/members', formData,
+            process.env.baseApiUrl + '/members', 
+            formData,
             { headers:
                     {
                         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
                     }
-            } 
+            } ,
+            false
         
     )
 }
