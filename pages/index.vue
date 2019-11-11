@@ -30,7 +30,7 @@
             
 
             <div id="answer">                
-                <input ref="answer" type="text" spellcheck="false" v-model="answer"/>
+                <input ref="answer" style="text-transform: lowercase;" type="text" spellcheck="false" v-model="answer"/>
             </div>            
 
             <div id="wrong" v-if="conjugation && wrong">
@@ -258,6 +258,7 @@
             },
             checkAnswer(){
                 if(this.answer !== ''){
+                    this.answer = this.answer.toLowerCase();
                     this.recordAnswer(this.answer, this.conjugation.id, this.seconds_elapsed)
                     if(this.answer == this.conjugation.spanish){                     
                         this.nextQuestion()
