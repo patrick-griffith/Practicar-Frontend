@@ -314,14 +314,16 @@
                 this.answer = this.answer.replace(/.$/,new_char)
             },
             async useUserSettings(){
-                if(this.memberProfile.settings.tenses){
-                    this.tenseGroup = JSON.parse("[" + this.memberProfile.settings.tenses + "]");
-                }
-                if(this.memberProfile.settings.persons){
-                    this.personGroup = JSON.parse("[" + this.memberProfile.settings.persons + "]");
-                }
-                if(this.memberProfile.settings.regulars){
-                    this.regularGroup = JSON.parse("[" + this.memberProfile.settings.regulars + "]");
+                if(this.memberProfile.settings){
+                    if(this.memberProfile.settings.tenses){
+                        this.tenseGroup = JSON.parse("[" + this.memberProfile.settings.tenses + "]");
+                    }
+                    if(this.memberProfile.settings.persons){
+                        this.personGroup = JSON.parse("[" + this.memberProfile.settings.persons + "]");
+                    }
+                    if(this.memberProfile.settings.regulars){
+                        this.regularGroup = JSON.parse("[" + this.memberProfile.settings.regulars + "]");
+                    }
                 }
             }
         },
