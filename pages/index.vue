@@ -11,8 +11,10 @@
                     practicing only <strong>{{ singleVerb.spanish }}</strong>. <nuxt-link :to="'/'">practice all verbs.</nuxt-link>
                 </div>
                 <div v-else id="spanish-verb">
-                    <b-tooltip label="click to practice JUST this verb" type="is-dark">
-                        <nuxt-link :to="'/verb/' + conjugation.verb.spanish">{{ conjugation.verb.spanish }}</nuxt-link>
+                    <b-tooltip label="click to practice JUST this verb" type="is-dark">                        
+                        <nuxt-link :to="'/verb/' + conjugation.verb.spanish">
+                            <b-tag>{{ conjugation.verb.spanish }}</b-tag>
+                        </nuxt-link>
                     </b-tooltip>
                 </div>
             </template>
@@ -30,9 +32,16 @@
             
 
             <div id="answer">  
-                <input ref="answer" 
-                    @keydown="answerTyped" 
-                    style="text-transform: lowercase;" type="text" spellcheck="false" v-model="answer"/>
+                <div>
+                    <div id="answer-person" v-if="conjugation">
+                        <span>{{ conjugation.person.spanish }}</span>
+                    </div>
+                    <div>
+                        <input ref="answer" 
+                        @keydown="answerTyped" 
+                        style="text-transform: lowercase;" type="text" spellcheck="false" v-model="answer"/>
+                    </div>
+                </div>
             </div>            
 
             <div id="wrong" v-if="conjugation && wrong">

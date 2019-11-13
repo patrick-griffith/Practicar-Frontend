@@ -23,7 +23,10 @@ body{
 
 #spanish-verb{
   margin-bottom: 1em;
-  font-size: 1.5em;
+  font-size: 1em;
+  .tag{
+    font-size: 1em!important;
+  }
 }
 #question-box{
   margin: 3em auto 6em;
@@ -33,6 +36,9 @@ body{
     }
   }
   #answer{
+    > div, > div > div{
+      display: inline-block;
+    }
     span{
 
     }
@@ -41,13 +47,19 @@ body{
       border-bottom: 2px solid grey;
       outline: none;
       width: 100%;
-      max-width: 300px;
       font-size: 44px;
-      text-align: center;
       margin-top: .5em;
       padding-bottom: .15em;
+      padding-left: .5em; padding-right: .5em;
 
     }
+  }
+}
+#answer-person{
+  span{
+    display: block;
+    margin-top: 60px;
+    padding: 0 1em;
   }
 }
 
