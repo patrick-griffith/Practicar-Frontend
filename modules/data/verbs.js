@@ -35,7 +35,7 @@ export async function getQuestions(tenses, persons, regulars, singleVerb) {
 export async function getMoods() {
     return await $invoke._invoker(
         'get',
-        process.env.baseApiUrl + '/moods?_with=tenses&id-in=1,4,5',
+        process.env.baseApiUrl + '/moods?_with=tenses&id-in=1,3,4,5',
         {},{},false
     )
 }

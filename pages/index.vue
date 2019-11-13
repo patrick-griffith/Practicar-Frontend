@@ -29,7 +29,7 @@
             </h1>
             
 
-            <div id="answer">                
+            <div id="answer">  
                 <input ref="answer" 
                     @keydown="answerTyped" 
                     style="text-transform: lowercase;" type="text" spellcheck="false" v-model="answer"/>
@@ -47,13 +47,13 @@
             <div id="notes">
                 <b-message :active.sync="showHelp" title="Noticias" type="is-warning" aria-close-label="Close message">
                     <ul>
-                        <li class="list-item">press <code>SPACE</code> to add accent/tilda to most recent letter. again to remove.</li>
+                        <li class="list-item">press <code>TAB</code> to add accent/tilda to most recent letter. again to remove.</li>
                         <li class="list-item">change your settings below to practice different things.</li>
                         <li class="list-item">click a verb (in blue) above to practice JUST that verb.</li>
                         <li class="list-item" v-if="!isLoggedIn"><nuxt-link :to="'/login/signup'">create an account</nuxt-link> to save your settings and a complete record of all your answers, so your practice can be automatically tailored based on the verbs/tenses you struggle with.</li>
                     </ul>
                 </b-message>
-                <p v-if="showHelp == false"><code @click="accentLastChar()">SPACE</code> for accents. <code @click="showHelp = true">TAB</code> for info.</p>
+                <p v-if="showHelp == false"><code @click="accentLastChar()">TAB</code> for accents. <code @click="showHelp = true">8</code> for info.</p>
             </div>
 
         </div>
@@ -77,13 +77,6 @@
                                 <h3 class="subtitle is-italic">{{ mood.name }}</h3>
                                 <div class="field" v-for="tense in mood.tenses" :key="tense.id">                                    
                                     <b-checkbox v-model="tenseGroup" :native-value="tense.id">{{ tense.name }}</b-checkbox>
-                                </div>
-                            </div>
-
-                            <div>
-                                <h3 class="subtitle is-italic">imperativo</h3>
-                                <div class="field">
-                                    <b-tag>coming soon</b-tag>
                                 </div>
                             </div>
 
@@ -260,7 +253,7 @@
             },
             checkAnswer(){
                 if(this.answer !== ''){
-                    this.answer = this.answer.toLowerCase();
+                    this.answer = this.answer.toLowerCase().trim();
                     this.recordAnswer(this.answer, this.conjugation.id, this.seconds_elapsed)
                     if(this.answer == this.conjugation.spanish){                     
                         this.nextQuestion()
@@ -329,11 +322,11 @@
                 }
             },
             answerTyped(evt){
-                if (evt.keyCode === 32) { //SPACE
+                if (evt.keyCode === 9) { //TAB         
                     evt.preventDefault()
-                    this.accentLastChar()                    
+                    this.accentLastChar()                                      
                 }
-                else if (evt.keyCode === 9) { //TAB
+                else if (evt.keyCode === 56) { //8
                     evt.preventDefault()
                     if(this.showHelp == true){
                         this.showHelp = false
