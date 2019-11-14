@@ -1,6 +1,6 @@
 <template>
     <div :class="{'logged-in' : isLoggedIn}">         
-        <div id="question-box" class="has-text-centered" v-if="conjugation">
+        <div id="question-box" class="has-text-centered">
 
             <div id="score">
                <span class="correct">{{ score.right }}</span> <span class="slash">/</span> <span class="total">{{ score.total }}</span>
@@ -10,7 +10,7 @@
                 <div v-if="singleVerb" id="spanish-verb">
                     practicing only <strong>{{ singleVerb.spanish }}</strong>. <nuxt-link :to="'/'">practice all verbs.</nuxt-link>
                 </div>
-                <div v-else id="spanish-verb">
+                <div v-else-if="conjugation" id="spanish-verb">
                     <b-tooltip label="click to practice JUST this verb" type="is-dark">                        
                         <nuxt-link :to="'/verb/' + conjugation.verb.spanish">
                             <b-tag>{{ conjugation.verb.spanish }}</b-tag>
@@ -19,7 +19,7 @@
                 </div>
             </template>
             
-            <h1 class="title">
+            <h1 class="title" v-if="conjugation">
                 <template v-if="conjugation.tense.mood.id == 3">¡</template>
                 
                 {{ conjugation.english }}                
@@ -32,10 +32,10 @@
             
 
             <div id="answer">  
-                <input ref="answer" :placeholder="conjugation.person.spanish" @keydown="answerTyped" type="text" spellcheck="false" v-model="answer"/>
+                <input ref="answer" :placeholder="conjugation ? conjugation.person.spanish : ''" @keydown="answerTyped" type="text" spellcheck="false" v-model="answer"/>
             </div>            
 
-            <div id="wrong" v-if="wrong">
+            <div id="wrong" v-if="wrong && conjugation">
                 <p>{{ conjugation.spanish }}</p>
                 <table>
                     <tr><td>Verb:</td><td>{{ conjugation.verb.spanish }}</td></tr>
@@ -219,8 +219,7 @@
                     this.regularGroup.toString(),
                     this.singleVerb
                 ).then((result) => {    
-                    this.conjugations = result.success.data.conjugations
-                    this.$refs.answer.focus()
+                    this.conjugations = result.success.data.conjugations                    
                 }).catch((error) => {
                     console.log("error", error);
                 }) 
@@ -355,11 +354,14 @@
 
             if(this.$route.params.verb){
                 await this.getSingleVerb(this.$route.params.verb)
-            }            
-
+            }       
+            
+            this.$refs.answer.focus()
+            
             this.getQuestions()            
             this.getMoods()
             this.getPersons()            
+
         }
     }
 </script>
