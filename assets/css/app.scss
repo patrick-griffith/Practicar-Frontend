@@ -36,31 +36,30 @@ body{
     }
   }
   #answer{
-    > div, > div > div{
-      display: inline-block;
-    }
-    span{
 
-    }
     input{
       border: none;
       border-bottom: 2px solid grey;
       outline: none;
       width: 100%;
+      max-width: 400px;
+      text-align: center;
       font-size: 44px;
       margin-top: .5em;
       padding-bottom: .15em;
-      padding-left: .5em; padding-right: .5em;
+      padding-left: .5em; 
+      padding-right: .5em;
+      text-transform: lowercase;
 
     }
+    @media screen and (max-width: 767px){
+      input{
+        margin-top: 0;
+        font-size: 34px;
+      }
+    }
   }
-}
-#answer-person{
-  span{
-    display: block;
-    margin-top: 60px;
-    padding: 0 1em;
-  }
+
 }
 
 #settings{
@@ -150,4 +149,23 @@ body{
     @extend .subtitle;
   }
   
+}
+
+::-webkit-input-placeholder { /* WebKit browsers */
+  color:    #ccc;
+  font-size: .5em;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+ color:    #ccc;
+ font-size: .5em;
+ opacity:  1;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+ color:    #ccc;
+ font-size: .5em;
+ opacity:  1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+ color:    #ccc;
+ font-size: .5em;
 }
