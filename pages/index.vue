@@ -116,7 +116,7 @@
                    <p>i’ve been taking <a href="https://www.walkspanish.com/" target="_blank">spanish classes</a> in la ciudad de mexico for the past couple of weeks, and have done super well on each of the assignments where we conjugate only one tense at a time. but then when i get out in the real world - where i don't have a paper telling me exactly what tense and what verb to use - i flutter.</p>
                    <p>so i’m building this to become a little better at quickly choosing the right verb and the right tense for what i want to say, and then conjugating it. because i don't care about doing well on my homework. i want to be able to have conversations.</p>
                    <p>i have a background in both maching learning engineering and in app development, so I have high hopes for what this app might one day be. but for now... poco a poco.</p>
-                   <p>also i understand that there are tons of shortcomings in this app right now. si quieres ayudar, <a href="patrick@radicallymarginal.com">email me</a>.</p>
+                   <p>also i understand that there are tons of shortcomings in this app right now. si quieres ayudar, <a href="mailto:patrick@radicallymarginal.com">email me</a>.</p>
                 </section>
             </div>
         </b-modal>
